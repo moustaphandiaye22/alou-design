@@ -1,28 +1,29 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useInView } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useLenis } from '@/components/providers/smooth-scroll'
 import { EASE } from '@/lib/motion'
 
 export function Preloader() {
   const lenis = useLenis()
-  const [done, setDone] = useState(false)
-  const [count, setCount] = useState(0)
+  const lenisRef = useRef(lenis)
+  lenisRef.current = lenis
+
   const [show, setShow] = useState(false)
-  const rootRef = useRef<HTMLDivElement>(null)
+  const [count, setCount] = useState(0)
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const seen = sessionStorage.getItem('noir:preloaded')
-    if (seen) return
-    setShow(true)
+    if (sessionStorage.getItem('noir:preloaded')) return
     sessionStorage.setItem('noir:preloaded', '1')
+    setShow(true)
   }, [])
 
   useEffect(() => {
     if (!show) return
-    lenis?.stop()
+    lenisRef.current?.stop()
     document.body.style.overflow = 'hidden'
 
     let frame = 0
@@ -38,20 +39,22 @@ export function Preloader() {
         setDone(true)
         window.setTimeout(() => {
           document.body.style.overflow = ''
-          lenis?.start()
+          lenisRef.current?.start()
           setShow(false)
         }, 650)
       }
     }
     frame = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frame)
-  }, [show, lenis])
+    return () => {
+      cancelAnimationFrame(frame)
+      document.body.style.overflow = ''
+    }
+  }, [show])
 
   return (
     <AnimatePresence>
       {show && (
         <motion.div
-          ref={rootRef}
           className="fixed inset-0 z-[200] flex items-end justify-between bg-[#050505] px-6 pb-8 pt-24 sm:px-10 lg:px-14"
           initial={{ y: 0 }}
           animate={done ? { y: '-101%' } : { y: 0 }}
@@ -80,10 +83,7 @@ export function Preloader() {
             className="absolute inset-x-6 bottom-0 h-px bg-white/10 sm:inset-x-10 lg:inset-x-14"
             aria-hidden
           >
-            <motion.div
-              className="h-full bg-primary"
-              style={{ width: `${count}%` }}
-            />
+            <motion.div className="h-full bg-primary" style={{ width: `${count}%` }} />
           </motion.div>
         </motion.div>
       )}

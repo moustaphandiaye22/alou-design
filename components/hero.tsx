@@ -1,15 +1,12 @@
 'use client'
 
-import { useRef } from 'react'
-import dynamic from 'next/dynamic'
+import { useRef, lazy, Suspense } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { ArrowUpRight, ArrowDown } from 'lucide-react'
 import { Magnetic } from '@/components/magnetic'
 import { EASE } from '@/lib/motion'
 
-const HeroCanvas = dynamic(() => import('@/components/hero-canvas'), {
-  ssr: false,
-})
+const HeroCanvas = lazy(() => import('@/components/hero-canvas'))
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
@@ -46,7 +43,9 @@ export function Hero() {
 
       {/* WebGL aura overlay */}
       <div className="absolute inset-0 z-[1] mix-blend-screen opacity-70">
-        <HeroCanvas />
+        <Suspense fallback={null}>
+          <HeroCanvas />
+        </Suspense>
       </div>
 
       {/* Elegant dark overlays */}

@@ -1,203 +1,117 @@
 'use client'
 
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { X, Play, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { SectionHeading } from '@/components/section-heading'
 import { cn } from '@/lib/utils'
+import { projects, categories, type Project } from '@/lib/projects'
+import { EASE } from '@/lib/motion'
 
-type Category = 'Mariage' | 'Portrait' | 'Événement' | 'Clip vidéo' | 'Publicité'
+function Card({ project, i }: { project: Project; i: number }) {
+  return (
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: EASE }}
+      className="break-inside-avoid"
+    >
+      <Link
+        to={`/work/${project.slug}`}
+        data-cursor="view"
+        data-label="Voir"
+        className="group relative mb-5 block overflow-hidden rounded-sm border border-border bg-card"
+      >
+        <div className="relative overflow-hidden">
+          <img
+            src={project.cover}
+            alt={project.title}
+            className="w-full object-cover transition-transform duration-[1.1s] ease-out group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-95" />
+        </div>
 
-type Work = {
-  src: string
-  title: string
-  category: Category
-  video?: boolean
+        <div className="absolute inset-0 flex flex-col justify-between p-6">
+          <div className="flex items-start justify-between">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">
+              {project.category}
+            </span>
+            <span className="flex h-10 w-10 translate-y-2 items-center justify-center rounded-full border border-primary/50 bg-background/40 text-primary opacity-0 backdrop-blur-sm transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
+          </div>
+
+          <div className="translate-y-3 transition-all duration-500 group-hover:translate-y-0">
+            <p className="text-xs text-muted-foreground">{project.year}</p>
+            <h3 className="mt-1 font-serif text-2xl text-foreground">
+              {project.title}
+            </h3>
+          </div>
+        </div>
+      </Link>
+    </motion.li>
+  )
 }
 
-const works: Work[] = [
-  { src: '/images/wedding-1.png', title: 'Sarah & Julien', category: 'Mariage' },
-  { src: '/images/portrait-1.png', title: 'Lumière studio', category: 'Portrait' },
-  { src: '/images/video-3.png', title: 'Film de mariage', category: 'Clip vidéo', video: true },
-  { src: '/images/event-1.png', title: 'Gala automnal', category: 'Événement' },
-  { src: '/images/ad-1.png', title: 'Parfum — Éclat', category: 'Publicité' },
-  { src: '/images/portrait-3.png', title: 'Champ doré', category: 'Portrait' },
-  { src: '/images/wedding-2.png', title: 'Détails & bouquet', category: 'Mariage' },
-  { src: '/images/video-2.png', title: 'Clip — Neon Nights', category: 'Clip vidéo', video: true },
-  { src: '/images/event-2.png', title: 'Conférence 2024', category: 'Événement' },
-  { src: '/images/portrait-2.png', title: 'Portrait corporate', category: 'Portrait' },
-  { src: '/images/ad-2.png', title: 'Joaillerie — Aura', category: 'Publicité' },
-  { src: '/images/video-1.png', title: 'Making of', category: 'Clip vidéo', video: true },
-]
-
-const filters: ('Tout' | Category)[] = [
-  'Tout',
-  'Mariage',
-  'Portrait',
-  'Événement',
-  'Clip vidéo',
-  'Publicité',
-]
-
 export function Portfolio() {
-  const [active, setActive] = useState<'Tout' | Category>('Tout')
-  const [lightbox, setLightbox] = useState<number | null>(null)
-
+  const [active, setActive] = useState<string>('Tout')
   const filtered = useMemo(
-    () => (active === 'Tout' ? works : works.filter((w) => w.category === active)),
+    () =>
+      active === 'Tout'
+        ? projects
+        : projects.filter((p) => p.category === active),
     [active],
   )
 
-  useEffect(() => {
-    if (lightbox === null) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightbox(null)
-      if (e.key === 'ArrowRight') setLightbox((i) => (i === null ? null : (i + 1) % filtered.length))
-      if (e.key === 'ArrowLeft')
-        setLightbox((i) => (i === null ? null : (i - 1 + filtered.length) % filtered.length))
-    }
-    window.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [lightbox, filtered.length])
-
   return (
-    <section id="portfolio" className="border-t border-border py-24 lg:py-32">
+    <section id="travaux" className="border-t border-border py-24 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <SectionHeading
-          eyebrow="Portfolio"
-          title="Une sélection de mes travaux"
-          description="Chaque projet est unique. Découvrez mes réalisations en photographie et vidéo, filtrées par type de prestation."
-        />
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading
+            eyebrow="Portfolio"
+            title="Une sélection de travaux"
+            description="Chaque projet est une réponse sur-mesure. Filtrez par discipline et plongez dans nos réalisations."
+          />
+          <p className="font-serif text-5xl text-primary">
+            {String(projects.length).padStart(2, '0')}
+            <span className="text-base text-muted-foreground"> projets</span>
+          </p>
+        </div>
 
         {/* Filters */}
-        <div className="mt-10 flex flex-wrap gap-2">
-          {filters.map((f) => (
+        <div className="mt-12 flex flex-wrap gap-2">
+          {categories.map((c) => (
             <button
-              key={f}
+              key={c}
               type="button"
-              onClick={() => setActive(f)}
+              onClick={() => setActive(c)}
               className={cn(
                 'rounded-full border px-4 py-2 text-sm transition-all',
-                active === f
+                active === c
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border text-muted-foreground hover:border-primary/60 hover:text-foreground',
               )}
             >
-              {f}
+              {c}
             </button>
           ))}
         </div>
 
         {/* Masonry grid */}
-        <motion.div layout className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
+        <motion.ul
+          layout
+          className="mt-12 columns-1 gap-5 sm:columns-2 lg:columns-3"
+        >
           <AnimatePresence mode="popLayout">
-            {filtered.map((work, i) => (
-              <motion.button
-                layout
-                key={work.src}
-                type="button"
-                onClick={() => setLightbox(i)}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative block w-full break-inside-avoid overflow-hidden rounded-sm text-left"
-              >
-                <img
-                  src={work.src || '/placeholder.svg'}
-                  alt={work.title}
-                  className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                {work.video && (
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-full border border-primary/70 bg-background/50 text-primary backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
-                      <Play className="ml-0.5 h-5 w-5 fill-current" />
-                    </span>
-                  </span>
-                )}
-                <div className="absolute bottom-0 left-0 right-0 translate-y-3 p-5 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                  <p className="text-xs uppercase tracking-[0.2em] text-primary">{work.category}</p>
-                  <p className="mt-1 font-serif text-xl text-foreground">{work.title}</p>
-                </div>
-              </motion.button>
+            {filtered.map((project, i) => (
+              <Card key={project.slug} project={project} i={i} />
             ))}
           </AnimatePresence>
-        </motion.div>
+        </motion.ul>
       </div>
-
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightbox !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-background/95 p-4 backdrop-blur-xl"
-            onClick={() => setLightbox(null)}
-          >
-            <button
-              type="button"
-              aria-label="Fermer"
-              onClick={() => setLightbox(null)}
-              className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <button
-              type="button"
-              aria-label="Précédent"
-              onClick={(e) => {
-                e.stopPropagation()
-                setLightbox((i) => (i === null ? null : (i - 1 + filtered.length) % filtered.length))
-              }}
-              className="absolute left-4 flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary sm:left-8"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-
-            <motion.div
-              key={lightbox}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-h-[85vh] max-w-4xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={filtered[lightbox].src || '/placeholder.svg'}
-                alt={filtered[lightbox].title}
-                className="max-h-[85vh] w-auto rounded-sm object-contain"
-              />
-              <div className="mt-4 text-center">
-                <p className="text-xs uppercase tracking-[0.25em] text-primary">
-                  {filtered[lightbox].category}
-                </p>
-                <p className="mt-1 font-serif text-2xl text-foreground">
-                  {filtered[lightbox].title}
-                </p>
-              </div>
-            </motion.div>
-
-            <button
-              type="button"
-              aria-label="Suivant"
-              onClick={(e) => {
-                e.stopPropagation()
-                setLightbox((i) => (i === null ? null : (i + 1) % filtered.length))
-              }}
-              className="absolute right-4 flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary sm:right-8"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   )
 }

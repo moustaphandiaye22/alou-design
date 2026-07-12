@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -50,6 +48,10 @@
 
 :root {
   color-scheme: dark;
+  /* Font families (loaded via Google Fonts in index.html) */
+  --font-inter: 'Inter';
+  --font-cormorant: 'Cormorant Garamond';
+  --font-grotesk: 'Space Grotesk';
   /* Deep warm black */
   --background: oklch(0.16 0.006 60);
   /* Off-white cream */
