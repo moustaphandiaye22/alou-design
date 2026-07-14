@@ -1,18 +1,23 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Layout } from '@/components/Layout'
-import { Home } from '@/pages/Home'
-import { Project } from '@/pages/Project'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import {
+  AboutPage,
+  BookingPage,
+  HomePage,
+  LoginPage,
+  PortfolioPage,
+} from '@/pages/StudioPages'
 import { NotFound } from '@/pages/NotFound'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="work/:slug" element={<Project />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
+        <Route index element={<HomePage />} />
+        <Route path="portfolio" element={<PortfolioPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="booking" element={<BookingPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
