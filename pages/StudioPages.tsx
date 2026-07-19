@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import {
   CircleUserRound,
@@ -76,6 +76,17 @@ const scrollingImages = shuffledWork.slice(0, 16)
 const scrollingRowOne = scrollingImages.filter((_, index) => index % 2 === 0)
 const scrollingRowTwo = scrollingImages.filter((_, index) => index % 2 !== 0)
 
+const preloadedCategories = new Set<string>()
+function preloadCategory(category: string) {
+  if (preloadedCategories.has(category)) return
+  preloadedCategories.add(category)
+  const selection = category === 'Tout' ? work : work.filter(item => item.category === category)
+  selection.slice(0, 24).forEach(item => {
+    const image = new Image()
+    image.src = item.image
+  })
+}
+
 const nav = [
   { to: '/', label: 'Accueil' },
   { to: '/portfolio', label: 'Portfolio' },
@@ -139,12 +150,16 @@ export function HomePage() {
   const [slide, setSlide] = useState(0)
   const [homeFilter, setHomeFilter] = useState('Tout')
   const [homeVisibleCount, setHomeVisibleCount] = useState(24)
+  const [isHomePending, startHomeTransition] = useTransition()
   const homeCategories = ['Tout', ...Object.values(categoryLabels)]
   const homeSelection = homeFilter === 'Tout' ? work : work.filter(item => item.category === homeFilter)
   const homeVisible = homeSelection.slice(0, homeVisibleCount)
   const changeHomeFilter = (category: string) => {
-    setHomeFilter(category)
-    setHomeVisibleCount(24)
+    preloadCategory(category)
+    startHomeTransition(() => {
+      setHomeFilter(category)
+      setHomeVisibleCount(24)
+    })
   }
   useEffect(() => {
     const timer = window.setInterval(() => setSlide(v => (v + 1) % heroImages.length), 5500)
@@ -164,7 +179,7 @@ export function HomePage() {
           <div><Eyebrow>À propos</Eyebrow><h2>Je ne crée pas<br />pour décorer.<br /><em>Je crée pour marquer.</em></h2><p>Je suis Alassane GUEYE, créatif passionné par les arts graphiques, le branding et le motion design.</p><p>Depuis bientôt quatre ans, je transforme les idées en identités fortes, cohérentes et mémorables.</p><Link className="text-link" to="/about">Découvrir mon parcours →</Link></div>
         </section>
         <section className="lux-section home-work"><Eyebrow>Portfolio</Eyebrow><h2>Nos Univers</h2><div className="universe-rows"><div className="work-strip-wrap"><div className="work-strip">{[...scrollingRowOne, ...scrollingRowOne].map((item, index) => <article key={`one-${item.image}-${index}`}><img src={item.image} alt="" loading="lazy" decoding="async" /></article>)}</div></div><div className="work-strip-wrap"><div className="work-strip work-strip-reverse">{[...scrollingRowTwo, ...scrollingRowTwo].map((item, index) => <article key={`two-${item.image}-${index}`}><img src={item.image} alt="" loading="lazy" decoding="async" /></article>)}</div></div></div><Link to="/portfolio" className="line-button">Voir tout le portfolio</Link></section>
-        <section className="home-portfolio"><div className="home-portfolio-heading"><Eyebrow>Photographies</Eyebrow><h2>Le portfolio complet</h2><p>{homeSelection.length} images</p></div><div className="filters">{homeCategories.map(category => <button key={category} onClick={() => changeHomeFilter(category)} className={homeFilter === category ? 'active' : ''}>{category}</button>)}</div><div className="portfolio-grid">{homeVisible.map(item => <article key={item.image}><img src={item.image} alt="" loading="lazy" decoding="async" /></article>)}</div>{homeVisibleCount < homeSelection.length && <div className="load-more"><button className="gold-button" onClick={() => setHomeVisibleCount(count => count + 24)}>Voir plus de photos</button></div>}</section>
+        <section className="home-portfolio"><div className="home-portfolio-heading"><Eyebrow>Photographies</Eyebrow><h2>Le portfolio complet</h2><p>{homeSelection.length} images</p></div><div className="filters">{homeCategories.map(category => <button key={category} onPointerEnter={() => preloadCategory(category)} onPointerDown={() => preloadCategory(category)} onFocus={() => preloadCategory(category)} onClick={() => changeHomeFilter(category)} className={homeFilter === category ? 'active' : ''}>{category}</button>)}</div><div key={homeFilter} className={`portfolio-grid portfolio-grid-enter${isHomePending ? ' is-updating' : ''}`}>{homeVisible.map(item => <PortfolioPhoto key={item.image} item={item} />)}</div>{homeVisibleCount < homeSelection.length && <div className="load-more"><button className="gold-button" onClick={() => setHomeVisibleCount(count => count + 24)}>Voir plus de photos</button></div>}</section>
         <section className="lux-section home-cta"><Eyebrow>Un projet en tête ?</Eyebrow><h2>Donnons vie à <em>votre vision</em></h2><p>Identité visuelle, branding, supports graphiques ou motion design : chaque collaboration commence par une conversation.</p><div><a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="gold-button">Me contacter</a><a href={`mailto:${CONTACT.email}`} className="line-button">M’écrire</a></div></section>
       </main>
     </Shell>
@@ -177,17 +192,26 @@ function AboutPortraits() {
   return <div className="about-portraits" aria-label="Portraits d’Alassane GUEYE">{aboutImages.map((image, index) => <img key={image} src={image} alt={index === 0 ? 'Alassane GUEYE, créateur d’Alou Creator' : ''} loading="eager" decoding="async" fetchPriority={index === 0 ? 'high' : 'auto'} />)}</div>
 }
 
+function PortfolioPhoto({ item }: { item: PortfolioImage }) {
+  const [loaded, setLoaded] = useState(false)
+  return <article className={loaded ? 'is-loaded' : ''}><img src={item.image} alt="" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} /></article>
+}
+
 export function PortfolioPage() {
   const categories = ['Tout', ...Object.values(categoryLabels)]
   const [filter, setFilter] = useState('Tout')
   const [visibleCount, setVisibleCount] = useState(18)
+  const [isPending, startTransition] = useTransition()
   const shown = filter === 'Tout' ? work : work.filter(w => w.category === filter)
   const visible = shown.slice(0, visibleCount)
   const changeFilter = (category: string) => {
-    setFilter(category)
-    setVisibleCount(18)
+    preloadCategory(category)
+    startTransition(() => {
+      setFilter(category)
+      setVisibleCount(18)
+    })
   }
-  return <Shell><main className="inner-page"><div className="page-heading"><Eyebrow>Portfolio photo</Eyebrow><h1>Toutes nos Images</h1><p className="portfolio-count">{shown.length} photographies</p></div><div className="filters">{categories.map(c => <button key={c} onClick={() => changeFilter(c)} className={filter === c ? 'active' : ''}>{c}</button>)}</div><div className="portfolio-grid">{visible.map(item => <article key={item.image}><img src={item.image} alt="" loading="lazy" decoding="async" /></article>)}</div>{visibleCount < shown.length && <div className="load-more"><button className="gold-button" onClick={() => setVisibleCount(count => count + 18)}>Charger plus d’images</button></div>}</main></Shell>
+  return <Shell><main className="inner-page"><div className="page-heading"><Eyebrow>Portfolio photo</Eyebrow><h1>Toutes nos Images</h1><p className="portfolio-count">{shown.length} photographies</p></div><div className="filters">{categories.map(c => <button key={c} onPointerEnter={() => preloadCategory(c)} onPointerDown={() => preloadCategory(c)} onFocus={() => preloadCategory(c)} onClick={() => changeFilter(c)} className={filter === c ? 'active' : ''}>{c}</button>)}</div><div key={filter} className={`portfolio-grid portfolio-grid-enter${isPending ? ' is-updating' : ''}`}>{visible.map(item => <PortfolioPhoto key={item.image} item={item} />)}</div>{visibleCount < shown.length && <div className="load-more"><button className="gold-button" onClick={() => setVisibleCount(count => count + 18)}>Charger plus d’images</button></div>}</main></Shell>
 }
 
 export function AboutPage() {
