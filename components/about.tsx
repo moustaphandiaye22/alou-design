@@ -55,7 +55,7 @@ export function About() {
           <Reveal>
             <div className="relative">
               <ImageReveal
-                src="/images/about.png"
+                src="/mariage/_OUZ4116.jpg"
                 alt="L’atelier du Studio Noir"
                 className="aspect-[4/5] rounded-sm"
               />

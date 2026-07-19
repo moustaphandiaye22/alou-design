@@ -34,7 +34,7 @@ export function Hero() {
         className="absolute inset-0 z-0"
       >
         <img
-          src="/images/hero.png"
+          src="/cover%20diaporamara/2024_09_15_14_56_IMG_1829.JPG"
           alt=""
           aria-hidden
           className="h-full w-full object-cover"

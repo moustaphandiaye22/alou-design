@@ -6,12 +6,12 @@ import { ArrowRight } from 'lucide-react'
 import { EASE } from '@/lib/motion'
 
 const shots = [
-  { src: '/images/wedding-1.png', label: 'Maison Lumière', tag: 'Identité' },
-  { src: '/images/video-2.png', label: 'Neon Nights', tag: 'Motion' },
-  { src: '/images/ad-2.png', label: 'Aura', tag: '3D' },
-  { src: '/images/event-1.png', label: 'Gala Automne', tag: 'Événement' },
-  { src: '/images/portrait-3.png', label: 'Silhouettes', tag: 'Éditorial' },
-  { src: '/images/video-1.png', label: 'Atlas Réalty', tag: 'Web' },
+  { src: '/mariage/princesse%20biaye_67.JPG', label: 'Maison Lumière', tag: 'Mariage' },
+  { src: '/concert/VJ_76.jpg', label: 'Neon Nights', tag: 'Concert' },
+  { src: '/distribution%20ndogou/La%20fleche%20_86.jpg', label: 'Ndogou', tag: 'Reportage' },
+  { src: '/cover%20diaporamara/2024_09_15_14_56_IMG_1829.JPG', label: 'Dakar', tag: 'Vue aérienne' },
+  { src: '/defiler/aloucreator_93.jpg', label: 'Défilé', tag: 'Culture' },
+  { src: '/shoothing/2024_10_21_23_21_IMG_2541.JPG', label: 'Portrait', tag: 'Shooting' },
 ]
 
 export function Gallery() {

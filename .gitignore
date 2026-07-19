@@ -13,3 +13,14 @@ __v0_jsx-dev-runtime.ts
 node_modules
 dist/
 .DS_Store
+
+# Original portfolio photos (local sources; optimized WebP files are committed)
+public/concert/
+public/cover diaporamara/
+public/defiler/
+public/distribution ndogou/
+public/mariage/
+public/shoothing/
+public/image1.jpeg
+public/image2.jpeg
+public/image3.jpeg

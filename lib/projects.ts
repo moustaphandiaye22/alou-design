@@ -26,6 +26,22 @@ export type Project = {
   gallery: string[]
 }
 
+const IMG = {
+  ad1: '/mariage/prince%20silva_89.JPG',
+  ad2: '/distribution%20ndogou/La%20fleche%20_86.jpg',
+  video1: '/concert/VJ_76.jpg',
+  video2: '/concert/CONCERT%20GUN%20MOR_103.jpg',
+  video3: '/concert/BMJAAY_68.jpg',
+  portrait1: '/defiler/aloucreator_93.jpg',
+  portrait2: '/shoothing/2024_10_21_23_21_IMG_2541.JPG',
+  portrait3: '/defiler/aloucreator_108.jpg',
+  event1: '/concert/VJ_59.jpg',
+  event2: '/cover%20diaporamara/2024_09_15_14_56_IMG_1829.JPG',
+  wedding1: '/mariage/princesse%20biaye_67.JPG',
+  wedding2: '/distribution%20ndogou/La%20fleche%20_253.jpg',
+  about: '/mariage/_OUZ4116.jpg',
+}
+
 export const projects: Project[] = [
   {
     slug: 'maison-lumiere',
@@ -33,13 +49,13 @@ export const projects: Project[] = [
     category: 'Identité de marque',
     year: '2025',
     client: 'Maison Lumière',
-    cover: '/images/ad-1.png',
+    cover: IMG.ad1,
     excerpt:
       'Une identité de joaillerie pensée comme un écrin : sobre, précieuse, intemporelle.',
     description:
       "Pour Maison Lumière, nous avons imaginé un système visuel complet : logotype gravé, palette dorée, typographie sériale et un film de marque tourné en lumière rasante. Chaque touchpoint raconte la même histoire de raffinement.",
     services: ['Brand Strategy', 'Identité visuelle', 'Direction artistique', 'Film de marque'],
-    gallery: ['/images/ad-1.png', '/images/ad-2.png', '/images/portrait-1.png', '/images/portrait-3.png'],
+    gallery: [IMG.ad1, IMG.ad2, IMG.portrait1, IMG.portrait3],
   },
   {
     slug: 'atlas-realty',
@@ -47,13 +63,13 @@ export const projects: Project[] = [
     category: 'Site web & UX',
     year: '2025',
     client: 'Atlas Réalty',
-    cover: '/images/video-1.png',
+    cover: IMG.video1,
     excerpt:
       'Une expérience web immersive pour révéler des architectures d’exception.',
     description:
       "Refonte digitale complète d'un groupe immobilier premium. Parcours narratif, transitions cinématographiques et performances soignées pour un site qui se visite comme une galerie.",
     services: ['UX / UI Design', 'Développement Next.js', 'Motion Design', 'CMS sur mesure'],
-    gallery: ['/images/video-1.png', '/images/video-2.png', '/images/event-1.png', '/images/event-2.png'],
+    gallery: [IMG.video1, IMG.video2, IMG.event1, IMG.event2],
   },
   {
     slug: 'neon-nights',
@@ -61,13 +77,13 @@ export const projects: Project[] = [
     category: 'Motion & Film',
     year: '2024',
     client: 'Festival Neon',
-    cover: '/images/video-2.png',
+    cover: IMG.video2,
     excerpt:
       'Un film d’ouverture vibrant, entre néons et silhouettes en mouvement.',
     description:
       "Direction artistique et montage d'un film de开幕 pour un festival pluridisciplinaire. Étalonnage chaud, rythme syncopé et titre animé en 3D.",
     services: ['Direction artistique', 'Montage', 'Étalonnage', 'Titre 3D'],
-    gallery: ['/images/video-2.png', '/images/video-3.png', '/images/portrait-2.png', '/images/portrait-3.png'],
+    gallery: [IMG.video2, IMG.video3, IMG.portrait2, IMG.portrait3],
   },
   {
     slug: 'aura-parfum',
@@ -75,13 +91,13 @@ export const projects: Project[] = [
     category: 'Campagne & 3D',
     year: '2024',
     client: 'Aura',
-    cover: '/images/ad-2.png',
+    cover: IMG.ad2,
     excerpt:
       'Un flacon sculpté en 3D et une campagne qui évoque le souffle du parfum.',
     description:
       "Production 3D photoréaliste d'un flacon signature et déclinaison en visuels sociaux et display. Une direction sensorielle traduite en images.",
     services: ['3D & Rendu', 'Art Direction', 'Social Content', 'Retouche'],
-    gallery: ['/images/ad-2.png', '/images/ad-1.png', '/images/portrait-1.png', '/images/wedding-1.png'],
+    gallery: [IMG.ad2, IMG.ad1, IMG.portrait1, IMG.wedding1],
   },
   {
     slug: 'gala-automne',
@@ -89,13 +105,13 @@ export const projects: Project[] = [
     category: 'Événement & Photo',
     year: '2024',
     client: 'Fondation Hiver',
-    cover: '/images/event-1.png',
+    cover: IMG.event1,
     excerpt:
       'Couverture élégante d’un gala caritatif, de la réception au dernier toast.',
     description:
       "Reportage photo et captation vidéo d'un événement de prestige. Un regard discret et cinématographique pour figer l'instant sans le troubler.",
     services: ['Photographie', 'Captation', 'Montage événementiel', 'Retouche'],
-    gallery: ['/images/event-1.png', '/images/event-2.png', '/images/wedding-2.png', '/images/wedding-1.png'],
+    gallery: [IMG.event1, IMG.event2, IMG.wedding2, IMG.wedding1],
   },
   {
     slug: 'serie-portraits',
@@ -103,13 +119,13 @@ export const projects: Project[] = [
     category: 'Éditorial',
     year: '2023',
     client: 'Magazine Écho',
-    cover: '/images/portrait-2.png',
+    cover: IMG.portrait2,
     excerpt:
       'Une série de portraits en clair-obscur pour un numéro spécial mode.',
     description:
       "Éditorial mode conçu autour du contraste et de la matière. Lumière studio sculpturale, direction des modèles et étalonnage monochrome.",
     services: ['Direction artistique', 'Photographie studio', 'Étalonnage', 'Retouche'],
-    gallery: ['/images/portrait-2.png', '/images/portrait-1.png', '/images/portrait-3.png', '/images/about.png'],
+    gallery: [IMG.portrait2, IMG.portrait1, IMG.portrait3, IMG.about],
   },
   {
     slug: 'conference-2024',
@@ -117,13 +133,13 @@ export const projects: Project[] = [
     category: 'Branding & Scénographie',
     year: '2024',
     client: 'Summit Tech',
-    cover: '/images/event-2.png',
+    cover: IMG.event2,
     excerpt:
       'Identité scénique et contenus pour une conférence tech de mille personnes.',
     description:
       "Systeme visuel décliné du keynote aux écrans géants, en passant par le signalétique. Une cohérence graphique de bout en bout.",
     services: ['Scénographie', 'Motion', 'Templates', 'Live content'],
-    gallery: ['/images/event-2.png', '/images/event-1.png', '/images/video-3.png', '/images/video-1.png'],
+    gallery: [IMG.event2, IMG.event1, IMG.video3, IMG.video1],
   },
   {
     slug: 'collection-doree',
@@ -131,13 +147,13 @@ export const projects: Project[] = [
     category: 'Identité & Packaging',
     year: '2023',
     client: 'Maison Dorée',
-    cover: '/images/wedding-2.png',
+    cover: IMG.wedding2,
     excerpt:
       'Un univers packaging d’or et de soie pour une maison de chocolat.',
     description:
       "Identité et packaging d'une collection limitée. Découpe, foil et photographie produit pour une expérience d'ouverture sensorielle.",
     services: ['Identité', 'Packaging', 'Photographie produit', 'Direction artistique'],
-    gallery: ['/images/wedding-2.png', '/images/wedding-1.png', '/images/ad-1.png', '/images/ad-2.png'],
+    gallery: [IMG.wedding2, IMG.wedding1, IMG.ad1, IMG.ad2],
   },
 ]
 

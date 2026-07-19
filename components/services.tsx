@@ -20,42 +20,42 @@ const services = [
     title: 'Branding & Identité',
     description:
       'Logotype, charte, typographie et système visuel. Une signature que l’on reconnaît au premier regard.',
-    image: '/images/ad-1.png',
+    image: '/mariage/prince%20silva_89.JPG',
   },
   {
     icon: LayoutTemplate,
     title: 'Design Web & UX',
     description:
       'Sites sur-mesure, interfaces fluides et expériences pensées pour convertir avec élégance.',
-    image: '/images/video-1.png',
+    image: '/concert/VJ_76.jpg',
   },
   {
     icon: Clapperboard,
     title: 'Motion Design',
     description:
       'Films de marque, animations et transitions qui donnent vie à votre récit.',
-    image: '/images/video-3.png',
+    image: '/concert/CONCERT%20GUN%20MOR_103.jpg',
   },
   {
     icon: Box,
     title: '3D & Immersif',
     description:
       'Rendus photoréalistes, univers en volume et expériences immersives en temps réel.',
-    image: '/images/ad-2.png',
+    image: '/distribution%20ndogou/La%20fleche%20_86.jpg',
   },
   {
     icon: Sparkles,
     title: 'Direction artistique',
     description:
       'Un cap créatif tenu de bout en bout, de l’intention au moindre détail.',
-    image: '/images/portrait-1.png',
+    image: '/defiler/aloucreator_93.jpg',
   },
   {
     icon: Compass,
     title: 'Stratégie',
     description:
       'Positionnement, narration et plateforme de marque pour donner du sens à la forme.',
-    image: '/images/event-1.png',
+    image: '/shoothing/2024_10_21_23_21_IMG_2541.JPG',
   },
 ]
 
